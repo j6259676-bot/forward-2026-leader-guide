@@ -155,8 +155,14 @@
   }
 
   // ---- 複製 ----
+  // 先用新的剪貼簿 API；被擋（例如 LINE 內建瀏覽器）就改用舊方法
   function copyText(t) {
-    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(t).catch(function () { return legacyCopy(t); });
+    }
+    return legacyCopy(t);
+  }
+  function legacyCopy(t) {
     return new Promise(function (ok, no) {
       var ta = document.createElement('textarea');
       ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
