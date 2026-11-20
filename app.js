@@ -49,66 +49,82 @@
   var steps = [G.step1, G.step2, G.step3, G.step4];
 
   // ---- 每一屏 ----
+  function cols(a, b) { return '<div class="cols"><div>' + a + '</div><div>' + b + '</div></div>'; }
+
   var screens = [
     function cover() {
       return '<div class="cover"><div class="k">THERE IS MORE</div>' +
         '<h1>' + phrases(G.oneLine) + '</h1>' +
-        '<p class="lead">' + esc(G.why) + '</p>' +
-        '<div class="box"><h2>帶小組前，5 分鐘走完這四步</h2><ol class="toc">' +
-        steps.map(function (s, i) {
-          return '<li><button type="button" data-go="' + (i + 1) + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(s.label) + '</b><span class="sub">' + esc(s.title) + '</span></span>' + icon('right') + '</button></li>';
-        }).join('') + '</ol></div>' +
-        '<div class="box">' + fold('我們期待看到', list(G.wins)) + '</div>' +
-        '<p class="meta">' + esc(G.audience) + '<br>' + esc(G.series) + '</p></div>';
+        cols(
+          '<p class="lead">' + esc(G.why) + '</p>' +
+          '<div class="box">' + fold('我們期待看到', list(G.wins)) + '</div>' +
+          '<p class="meta">' + esc(G.audience) + '<br>' + esc(G.series) + '</p>',
+          '<div class="box toc-box"><h2>帶小組前，5 分鐘走完這四步</h2><ol class="toc">' +
+          steps.map(function (s, i) {
+            return '<li><button type="button" data-go="' + (i + 1) + '"><span class="n">' + (i + 1) + '</span><span><b>' + esc(s.label) + '</b><span class="sub">' + esc(s.title) + '</span></span>' + icon('right') + '</button></li>';
+          }).join('') + '</ol></div>'
+        ) + '</div>';
     },
     function s1() {
       var s = G.step1;
       return head(1, s) +
         '<p class="lead">' + esc(s.intro) + '</p>' +
-        '<div class="box"><div class="acts">' + s.acts.map(function (a) {
-          return '<div class="act"><span class="en">' + esc(a[0]) + '</span><b>' + esc(a[1]) + '</b><p>' + esc(a[2]) + '</p></div>';
-        }).join('') + '</div></div>' +
-        '<p class="theme">' + esc(s.theme) + '</p>' +
-        '<div class="box"><h2>可以這樣講（1 分鐘）</h2><p class="quote">「' + esc(s.script) + '」</p>' +
-        '<div class="actions">' + copyBtn(s.script, '複製講稿', 'solid') + '</div></div>' +
-        '<div class="box"><h2>要講到的三個重點</h2>' + list(s.points) + '</div>' +
-        '<div class="box">' + fold('FORWARD 奉獻是什麼？', list(s.givingWhat)) + fold('FORWARD 奉獻代表什麼？', list(s.givingMeans)) + '</div>';
+        cols(
+          '<div class="box"><div class="acts">' + s.acts.map(function (a) {
+            return '<div class="act"><span class="en">' + esc(a[0]) + '</span><b>' + esc(a[1]) + '</b><p>' + esc(a[2]) + '</p></div>';
+          }).join('') + '</div></div>' +
+          '<p class="theme">' + esc(s.theme) + '</p>',
+          '<div class="box"><h2>可以這樣講（1 分鐘）</h2><p class="quote">「' + esc(s.script) + '」</p>' +
+          '<div class="actions">' + copyBtn(s.script, '複製講稿', 'solid') + '</div></div>'
+        ) +
+        cols(
+          '<div class="box"><h2>要講到的三個重點</h2>' + list(s.points) + '</div>',
+          '<div class="box">' + fold('FORWARD 奉獻是什麼？', list(s.givingWhat)) + fold('FORWARD 奉獻代表什麼？', list(s.givingMeans)) + '</div>'
+        );
     },
     function s2() {
       var s = G.step2;
       return head(2, s) +
         '<p class="lead">' + esc(s.intro) + '</p>' +
-        '<a class="video" href="' + esc(s.video.url) + '" target="_blank" rel="noopener"><span class="play">' + icon('play') + '</span><span><b>' + esc(s.video.title) + '</b><span class="sub">' + esc(s.video.meta) + '・參考他怎麼講</span></span><span class="ext">' + icon('ext') + '</span></a>' +
-        '<div class="box"><h2>故事可以這樣排（約 1–2 分鐘）</h2><ol>' + s.outline.map(function (o) {
-          return '<li><b>' + esc(o[0]) + '</b><br><span class="sub">' + esc(o[1]) + '</span></li>';
-        }).join('') + '</ol></div>' +
-        '<div class="box"><h2>可以分享的不只有成功</h2>' + list(s.notOnlySuccess) + '<p class="sub" style="margin-top:10px">' + esc(s.notOnlySuccessNote) + '</p></div>';
+        cols(
+          '<a class="video" href="' + esc(s.video.url) + '" target="_blank" rel="noopener"><span class="play">' + icon('play') + '</span><span><b>' + esc(s.video.title) + '</b><span class="sub">' + esc(s.video.meta) + '・參考他怎麼講</span></span><span class="ext">' + icon('ext') + '</span></a>' +
+          '<div class="box"><h2>故事可以這樣排（約 1–2 分鐘）</h2><ol>' + s.outline.map(function (o) {
+            return '<li><b>' + esc(o[0]) + '</b><br><span class="sub">' + esc(o[1]) + '</span></li>';
+          }).join('') + '</ol></div>',
+          '<div class="box"><h2>可以分享的不只有成功</h2>' + list(s.notOnlySuccess) + '<p class="sub" style="margin-top:10px">' + esc(s.notOnlySuccessNote) + '</p></div>'
+        );
     },
     function s3() {
       var s = G.step3;
       return head(3, s) +
         '<p class="lead">' + esc(s.intro) + '</p>' +
-        '<div class="box"><h2>可以這樣邀請</h2><p class="quote">「' + esc(s.script) + '」</p>' +
-        '<div class="actions">' + copyBtn(s.script, '複製講稿', 'solid') + '</div></div>' +
-        '<div class="box"><h2>小組裡的三個步驟</h2><ol class="flow">' + s.flow.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ol>' +
-        '<p class="sub" style="margin-top:8px">' + esc(s.flowNote) + '</p></div>' +
-        '<div class="box"><h2>FORWARD 奉獻怎麼邀請</h2><p>' + esc(s.giving) + '</p></div>' +
-        '<div class="box links"><h2>貼進小組群組</h2>' + s.links.map(function (l) {
-          return '<div class="link"><span class="t"><b>' + esc(l[0]) + '</b><a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[1].replace(/^https:\/\//, '')) + '</a></span>' + copyBtn(l[1], '複製') + '</div>';
-        }).join('') + '</div>' +
-        '<div class="box">' + fold('FORWARD 網站怎麼看', '<p>' + esc(s.siteIntro) + '</p><ol style="margin-top:10px">' +
-          s.siteParts.map(function (p) { return '<li><b>' + esc(p[0]) + '</b>：' + esc(p[1]) + '</li>'; }).join('') + '</ol><p class="sub" style="margin-top:10px">' + esc(s.siteNote) + '</p>') + '</div>';
+        cols(
+          '<div class="box"><h2>可以這樣邀請</h2><p class="quote">「' + esc(s.script) + '」</p>' +
+          '<div class="actions">' + copyBtn(s.script, '複製講稿', 'solid') + '</div></div>',
+          '<div class="box"><h2>小組裡的三個步驟</h2><ol class="flow">' + s.flow.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ol>' +
+          '<p class="sub" style="margin-top:8px">' + esc(s.flowNote) + '</p></div>' +
+          '<div class="box"><h2>FORWARD 奉獻怎麼邀請</h2><p>' + esc(s.giving) + '</p></div>'
+        ) +
+        cols(
+          '<div class="box links"><h2>貼進小組群組</h2>' + s.links.map(function (l) {
+            return '<div class="link"><span class="t"><b>' + esc(l[0]) + '</b><a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[1].replace(/^https:\/\//, '')) + '</a></span>' + copyBtn(l[1], '複製') + '</div>';
+          }).join('') + '</div>',
+          '<div class="box">' + fold('FORWARD 網站怎麼看', '<p>' + esc(s.siteIntro) + '</p><ol style="margin-top:10px">' +
+            s.siteParts.map(function (p) { return '<li><b>' + esc(p[0]) + '</b>：' + esc(p[1]) + '</li>'; }).join('') + '</ol><p class="sub" style="margin-top:10px">' + esc(s.siteNote) + '</p>') + '</div>'
+        );
     },
     function s4() {
       var s = G.step4, wk = currentWeek();
       return head(4, s) +
-        '<div class="box"><h2>三週節奏（線上分部）</h2>' + s.weeks.map(function (w, i) {
-          return '<div class="week' + (i === wk ? ' now' : '') + '"><div class="h">' + esc(w.name) + ' ' + esc(w.short) + '｜' + esc(w.theme) + (i === wk ? '<span class="tag">這週</span>' : '') + '</div>' +
-            '<p>主日：' + esc(w.sunday) + '</p><p class="g">' + esc(w.group) + '</p></div>';
-        }).join('') + '<p class="sub" style="margin-top:10px">' + esc(s.weeksNote) + '</p></div>' +
-        '<div class="box"><h2>要做</h2>' + list(s.dos) + '</div>' +
-        '<div class="box"><h2>不要做</h2>' + list(s.donts) + '</div>' +
-        '<div class="box"><h2>組員常問的問題</h2>' + s.faq.map(function (f) { return fold(f[0], '<p>' + esc(f[1]) + '</p>'); }).join('') + '</div>';
+        cols(
+          '<div class="box"><h2>三週節奏（線上分部）</h2>' + s.weeks.map(function (w, i) {
+            return '<div class="week' + (i === wk ? ' now' : '') + '"><div class="h">' + esc(w.name) + ' ' + esc(w.short) + '｜' + esc(w.theme) + (i === wk ? '<span class="tag">這週</span>' : '') + '</div>' +
+              '<p>主日：' + esc(w.sunday) + '</p><p class="g">' + esc(w.group) + '</p></div>';
+          }).join('') + '<p class="sub" style="margin-top:10px">' + esc(s.weeksNote) + '</p></div>',
+          '<div class="box"><h2>要做</h2>' + list(s.dos) + '</div>' +
+          '<div class="box"><h2>不要做</h2>' + list(s.donts) + '</div>'
+        ) +
+        '<div class="box faq"><h2>組員常問的問題</h2><div class="faq-grid">' + s.faq.map(function (f) { return fold(f[0], '<p>' + esc(f[1]) + '</p>'); }).join('') + '</div></div>';
     }
   ];
   function head(n, s) {
@@ -122,8 +138,15 @@
   var cur = -1;
 
   bar.insertAdjacentHTML('beforeend', steps.map(function (s, i) {
-    return '<button type="button" data-go="' + (i + 1) + '"><span>' + (i + 1) + ' ' + esc(s.label) + '</span></button>';
+    return '<button type="button" data-go="' + (i + 1) + '"><span>' + (i + 1) + ' ' + esc(s.label) + '</span><em>' + esc(s.title) + '</em></button>';
   }).join(''));
+
+  // 桌機側欄：常用連結（手機不顯示）
+  var top = document.querySelector('.top');
+  var quick = G.step3.links.concat([[G.step2.video.title, G.step2.video.url]]);
+  top.insertAdjacentHTML('beforeend', '<div class="side-links"><div class="k">常用連結</div>' + quick.map(function (l) {
+    return '<div class="sl"><a href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + '</a><button type="button" class="mini" data-copy="' + esc(l[1]) + '" data-label="" aria-label="複製' + esc(l[0]) + '連結">' + icon('copy') + '</button></div>';
+  }).join('') + '</div>');
 
   function render(i, fromHash) {
     if (i === cur) return;
@@ -180,11 +203,11 @@
       var label = c.dataset.label;
       copyText(c.dataset.copy).then(function () {
         c.classList.add('copied');
-        c.innerHTML = icon('check') + '<span>已複製</span>';
+        c.innerHTML = icon('check') + (label ? '<span>已複製</span>' : '');
       }, function () {
-        c.innerHTML = icon('copy') + '<span>複製失敗，請長按文字</span>';
+        c.innerHTML = icon('copy') + (label ? '<span>複製失敗，請長按文字</span>' : '');
       }).then(function () {
-        setTimeout(function () { c.classList.remove('copied'); c.innerHTML = icon('copy') + '<span>' + esc(label) + '</span>'; }, 1600);
+        setTimeout(function () { c.classList.remove('copied'); c.innerHTML = icon('copy') + (label ? '<span>' + esc(label) + '</span>' : ''); }, 1600);
       });
     }
   });
